@@ -1,0 +1,18 @@
+services:
+  openssh-server:
+    image: lscr.io/linuxserver/openssh-server:latest
+    container_name: openssh-server
+    hostname: openssh-server
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - PUBLIC_KEY=
+      - PASSWORD_ACCESS=true
+      - USER_NAME=testuser
+      - USER_PASSWORD=testpassword
+      - LOG_STDOUT=true
+    volumes:
+      - ${PWD}/custom-cont-init.d:/custom-cont-init.d:ro
+    ports:
+      - "127.0.0.1:2222:2222"
