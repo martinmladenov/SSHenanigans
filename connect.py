@@ -5,6 +5,7 @@ import socket
 import sys
 import json
 import multiprocessing
+from multiprocessing.pool import ThreadPool
 
 key = paramiko.rsakey.RSAKey.generate(2048)
 
@@ -63,7 +64,7 @@ def main():
     print(f'Loaded {total} hosts', file=sys.stderr)
 
     curr = multiprocessing.Value('i', 0)
-    pool = multiprocessing.Pool(initializer=worker_setup, initargs=[curr, total], processes=64) # connect to 64 hosts at a time
+    pool = ThreadPool(initializer=worker_setup, initargs=[curr, total], processes=64) # connect to 64 hosts at a time
     results = pool.map(process_host, hosts)
 
     print(json.dumps(results, indent=4))
